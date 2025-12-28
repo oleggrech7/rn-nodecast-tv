@@ -498,6 +498,23 @@ h4 {
   pointer-events: none;
 }
 
+/* Fullscreen mode for video container */
+.video-container:fullscreen {
+  width: 100%;
+  height: 100%;
+  background: #000;
+}
+
+.video-container:fullscreen #video-player {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.video-container:fullscreen .now-playing-overlay {
+  bottom: 80px;
+}
+
 .channel-nav {
   display: flex;
   flex-direction: column;

@@ -6,6 +6,7 @@
 class VideoPlayer {
     constructor() {
         this.video = document.getElementById('video-player');
+        this.container = document.querySelector('.video-container');
         this.overlay = document.getElementById('player-overlay');
         this.nowPlaying = document.getElementById('now-playing');
         this.hls = null;
@@ -495,8 +496,8 @@ class VideoPlayer {
     toggleFullscreen() {
         if (document.fullscreenElement) {
             document.exitFullscreen();
-        } else {
-            this.video.requestFullscreen();
+        } else if (this.container) {
+            this.container.requestFullscreen();
         }
     }
 }
