@@ -125,7 +125,22 @@ class VideoPlayer {
                             this.stop();
                             break;
                     }
+                } else if (data.type === Hls.ErrorTypes.MEDIA_ERROR) {
+                    // Non-fatal media error - try to recover (handles audio codec issues)
+                    console.log('Non-fatal media error, attempting recovery...');
+                    this.hls.recoverMediaError();
                 }
+            });
+
+            // Detect audio track switches (can cause audio glitches on some streams)
+            this.hls.on(Hls.Events.AUDIO_TRACK_SWITCHED, (event, data) => {
+                console.log('Audio track switched:', data);
+            });
+
+            // Detect buffer stalls which may indicate codec issues
+            this.hls.on(Hls.Events.BUFFER_STALLED_ERROR, () => {
+                console.log('Buffer stalled, attempting recovery...');
+                this.hls.recoverMediaError();
             });
 
             this.hls.on(Hls.Events.MANIFEST_PARSED, () => {
