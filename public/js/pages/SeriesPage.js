@@ -290,7 +290,7 @@ class SeriesPage {
 
             const poster = series.cover || '/img/placeholder.png';
             const year = series.year || series.releaseDate?.substring(0, 4) || '';
-            const rating = series.rating ? `⭐ ${series.rating}` : '';
+            const rating = series.rating ? `${Icons.star} ${series.rating}` : '';
 
             const isFav = this.favoriteIds.has(`${series.sourceId}:${series.series_id}`);
 
@@ -299,10 +299,10 @@ class SeriesPage {
                     <img src="${poster}" alt="${series.name}" 
                          onerror="this.onerror=null;this.src='/img/placeholder.png'" loading="lazy">
                     <div class="series-play-overlay">
-                        <span class="play-icon">▶</span>
+                        <span class="play-icon">${Icons.play}</span>
                     </div>
                     <button class="favorite-btn ${isFav ? 'active' : ''}" title="${isFav ? 'Remove from Favorites' : 'Add to Favorites'}">
-                        <span class="fav-icon">♥</span>
+                        <span class="fav-icon">${Icons.favorite}</span>
                     </button>
                 </div>
                 <div class="series-card-info">
@@ -375,7 +375,7 @@ class SeriesPage {
                 html += `
                 <div class="season-group">
                     <div class="season-header">
-                        <span class="season-expander">▼</span>
+                        <span class="season-expander">${Icons.chevronDown}</span>
                         <span class="season-name">Season ${seasonNum} (${episodes.length} episodes)</span>
                     </div>
                     <div class="episode-list">

@@ -280,7 +280,7 @@ class MoviesPage {
 
             const poster = movie.stream_icon || movie.cover || '/img/placeholder.png';
             const year = movie.year || movie.releaseDate?.substring(0, 4) || '';
-            const rating = movie.rating ? `⭐ ${movie.rating}` : '';
+            const rating = movie.rating ? `${Icons.star} ${movie.rating}` : '';
 
             const isFav = this.favoriteIds.has(`${movie.sourceId}:${movie.stream_id}`);
 
@@ -289,10 +289,10 @@ class MoviesPage {
                     <img src="${poster}" alt="${movie.name}" 
                          onerror="this.onerror=null;this.src='/img/placeholder.png'" loading="lazy">
                     <div class="movie-play-overlay">
-                        <span class="play-icon">▶</span>
+                        <span class="play-icon">${Icons.play}</span>
                     </div>
                     <button class="favorite-btn ${isFav ? 'active' : ''}" title="${isFav ? 'Remove from Favorites' : 'Add to Favorites'}">
-                        <span class="fav-icon">♥</span>
+                        <span class="fav-icon">${Icons.favorite}</span>
                     </button>
                 </div>
                 <div class="movie-info">

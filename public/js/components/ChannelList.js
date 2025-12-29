@@ -357,7 +357,7 @@ class ChannelList {
             html += `
         <div class="channel-group">
           <div class="group-header ${this.collapsedGroups.has(groupName) ? 'collapsed' : ''} ${isFavoritesGroup ? 'favorites-group' : ''}" data-group="${groupName}">
-            <span class="group-toggle">▼</span>
+            <span class="group-toggle">${Icons.chevronDown}</span>
             <span class="group-name">${groupName}</span>
             <span class="group-count">${visibleChannels.length}</span>
           </div>
@@ -393,7 +393,7 @@ class ChannelList {
               <div class="channel-program">${this.escapeHtml(this.getProgramInfo(channel) || '')}</div>
             </div>
             <button class="favorite-btn ${isFavorite ? 'active' : ''}" title="${isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}">
-              ${isFavorite ? '❤️' : '♡'}
+              ${isFavorite ? Icons.favorite : Icons.favoriteOutline}
             </button>
           </div>
         `;
@@ -708,14 +708,14 @@ class ChannelList {
                 this.visibleFavorites.delete(key);
                 btns.forEach(btn => {
                     btn.classList.remove('active');
-                    btn.innerHTML = '♡';
+                    btn.innerHTML = Icons.favoriteOutline;
                     btn.title = 'Add to Favorites';
                 });
             } else {
                 this.visibleFavorites.add(key);
                 btns.forEach(btn => {
                     btn.classList.add('active');
-                    btn.innerHTML = '❤️';
+                    btn.innerHTML = Icons.favorite;
                     btn.title = 'Remove from Favorites';
                 });
             }
@@ -745,7 +745,7 @@ class ChannelList {
                 this.visibleFavorites.add(key);
                 btns.forEach(btn => {
                     btn.classList.add('active');
-                    btn.innerHTML = '❤️';
+                    btn.innerHTML = Icons.favorite;
                 });
                 // Revert group update
                 const channel = this.channels.find(c => c.sourceId == sourceId && c.id == channelId);
@@ -754,7 +754,7 @@ class ChannelList {
                 this.visibleFavorites.delete(key);
                 btns.forEach(btn => {
                     btn.classList.remove('active');
-                    btn.innerHTML = '♡';
+                    btn.innerHTML = Icons.favoriteOutline;
                 });
                 // Revert group update
                 const channel = this.channels.find(c => c.sourceId == sourceId && c.id == channelId);

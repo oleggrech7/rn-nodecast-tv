@@ -449,7 +449,7 @@ class EpgGuide {
              data-source-id="${sourceChannel.sourceId}">
           <div class="epg-channel-info">
             <button class="favorite-btn ${isFavorite ? 'active' : ''}" title="${isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}">
-              ${isFavorite ? '❤️' : '♡'}
+              ${isFavorite ? Icons.favorite : Icons.favoriteOutline}
             </button>
             <img class="epg-channel-logo" src="${logo}" 
                  alt="" onerror="this.onerror=null;this.src='/img/placeholder.png'">
@@ -536,11 +536,11 @@ class EpgGuide {
             if (btn) {
                 if (isNowFavorite) {
                     btn.classList.add('active');
-                    btn.innerHTML = '❤️';
+                    btn.innerHTML = Icons.favorite;
                     btn.title = 'Remove from Favorites';
                 } else {
                     btn.classList.remove('active');
-                    btn.innerHTML = '♡';
+                    btn.innerHTML = Icons.favoriteOutline;
                     btn.title = 'Add to Favorites';
                 }
             }
@@ -578,11 +578,11 @@ class EpgGuide {
                 if (btn) {
                     if (wasFavorite) {
                         btn.classList.add('active');
-                        btn.innerHTML = '❤️';
+                        btn.innerHTML = Icons.favorite;
                         btn.title = 'Remove from Favorites';
                     } else {
                         btn.classList.remove('active');
-                        btn.innerHTML = '♡';
+                        btn.innerHTML = Icons.favoriteOutline;
                         btn.title = 'Add to Favorites';
                     }
                 }
@@ -619,11 +619,11 @@ class EpgGuide {
             if (btn) {
                 if (isFavorite) {
                     btn.classList.add('active');
-                    btn.innerHTML = '❤️';
+                    btn.innerHTML = Icons.favorite;
                     btn.title = 'Remove from Favorites';
                 } else {
                     btn.classList.remove('active');
-                    btn.innerHTML = '♡';
+                    btn.innerHTML = Icons.favoriteOutline;
                     btn.title = 'Add to Favorites';
                 }
             }

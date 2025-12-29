@@ -52,7 +52,7 @@ class SourceManager {
             return;
         }
 
-        const icons = { xtream: '📡', m3u: '📋', epg: '📺' };
+        const icons = { xtream: Icons.live, m3u: Icons.guide, epg: Icons.series };
 
         container.innerHTML = sources.map(source => `
       <div class="source-item ${source.enabled ? '' : 'disabled'}" data-id="${source.id}">
@@ -62,13 +62,13 @@ class SourceManager {
           <div class="source-url">${source.url}</div>
         </div>
         <div class="source-actions">
-          <button class="btn btn-sm btn-secondary" data-action="refresh" title="Refresh Data">🔄</button>
-          <button class="btn btn-sm btn-secondary" data-action="test" title="Test Connection">🔗</button>
+          <button class="btn btn-sm btn-secondary" data-action="refresh" title="Refresh Data">${Icons.play}</button>
+          <button class="btn btn-sm btn-secondary" data-action="test" title="Test Connection">${Icons.search}</button>
           <button class="btn btn-sm btn-secondary" data-action="toggle" title="${source.enabled ? 'Disable' : 'Enable'}">
-            ${source.enabled ? '✓' : '○'}
+            ${source.enabled ? Icons.favorite : Icons.favoriteOutline}
           </button>
-          <button class="btn btn-sm btn-secondary" data-action="edit" title="Edit">✏️</button>
-          <button class="btn btn-sm btn-danger" data-action="delete" title="Delete">🗑️</button>
+          <button class="btn btn-sm btn-secondary" data-action="edit" title="Edit">${Icons.settings}</button>
+          <button class="btn btn-sm btn-danger" data-action="delete" title="Delete">${Icons.close}</button>
         </div>
       </div>
     `).join('');
@@ -294,7 +294,7 @@ class SourceManager {
             const btn = document.querySelector(`.source-item[data-id="${id}"] [data-action="refresh"]`);
             if (btn) {
                 btn.disabled = true;
-                btn.textContent = '⏳';
+                btn.innerHTML = '<div class="loading-spinner" style="width:1em;height:1em;border-width:2px"></div>';
             }
 
             // Clear cache for this source first
@@ -322,7 +322,7 @@ class SourceManager {
 
             if (btn) {
                 btn.disabled = false;
-                btn.textContent = '🔄';
+                btn.innerHTML = Icons.play;
             }
         } catch (err) {
             console.error('Error refreshing source:', err);
@@ -546,7 +546,7 @@ class SourceManager {
         return `
             <div class="content-group ${isExpanded ? '' : 'collapsed'}" data-group-id="${this.escapeHtml(group.id)}">
                 <div class="content-group-header">
-                    <span class="group-expander">▼</span>
+                    <span class="group-expander">${Icons.chevronDown}</span>
                     <label class="checkbox-label" onclick="event.stopPropagation()">
                         <input type="checkbox" class="group-checkbox" 
                                data-type="group" 
