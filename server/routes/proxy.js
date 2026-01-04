@@ -317,28 +317,18 @@ router.get('/epg/:sourceId', async (req, res) => {
         const sourceId = parseInt(req.params.sourceId);
         const db = getDb();
 
-        // Return channels + programmes
-        // Frontend EpgGuide.js expects { channels: [], programmes: [] }
-        // It fetches ALL data. We should support timestamps later.
+        // Time window: 24 hours ago to 24 hours from now
+        // This prevents returning millions of rows and crashing the server/browser
+        const windowStart = Date.now() - (24 * 60 * 60 * 1000); // -24 hours
+        const windowEnd = Date.now() + (24 * 60 * 60 * 1000);   // +24 hours
 
-        // EPG Channels (from playlist_items where type='live')
-        // Ideally we only return channels that HAVE epg data? 
-        // Or just all channels for this source?
-        // The parser returns `channels` (xmltv channel definitions).
-        // We didn't strictly store XMLTV channel defs in `epg_programs`.
-        // We relied on mapping `channel_id` in `epg_programs`.
-        // Let's return the `playlist_items` as "channels" but mapped to EPG expectations?
-        // EpgGuide joins on `id === tvgId` or `name === name`.
-
-        // Fetch programs
-
-
-        let programsQuery = `SELECT channel_id as channelId, start_time, end_time, title, description, data FROM epg_programs WHERE source_id = ?`;
-        const params = [sourceId];
-
-        // Only valid programs?
-        // programsQuery += ` AND end_time > ?`;
-        // params.push(Date.now() - 86400000); // last 24h
+        // Fetch programs within the time window
+        let programsQuery = `
+            SELECT channel_id as channelId, start_time, end_time, title, description, data 
+            FROM epg_programs 
+            WHERE source_id = ? AND end_time > ? AND start_time < ?
+        `;
+        const params = [sourceId, windowStart, windowEnd];
 
         const programs = db.prepare(programsQuery).all(...params);
 

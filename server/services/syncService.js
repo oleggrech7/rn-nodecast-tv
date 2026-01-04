@@ -336,13 +336,9 @@ class SyncService {
     async syncM3u(source) {
         console.log(`[Sync] Fetching M3U playlist for ${source.name}`);
 
-        // Fetch and parse using existing parser
-        // We use fetch directly here to get the stream/text
-        const response = await fetch(source.url);
-        if (!response.ok) throw new Error(`Failed to fetch M3U: ${response.status}`);
-
-        const text = await response.text();
-        const { channels, groups } = await m3uParser.parse(text);
+        // Use the streaming parser directly to avoid loading entire file into memory
+        // This prevents OOM crashes on large playlists (100MB+)
+        const { channels, groups } = await m3uParser.fetchAndParse(source.url);
 
         console.log(`[Sync] M3U Parsed: ${channels.length} channels, ${groups.length} groups`);
 

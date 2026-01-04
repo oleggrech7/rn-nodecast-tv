@@ -40,11 +40,13 @@ router.get('/', (req, res) => {
         '-reconnect_streamed', '1',
         '-reconnect_delay_max', '5',
         '-i', url,
+        // Map all streams explicitly
+        '-map', '0',
         // Copy ALL streams without re-encoding
         '-c', 'copy',
-        // Convert AAC from ADTS format (TS) to ASC format (MP4)
-        // Required when remuxing MPEG-TS with AAC audio to MP4
-        '-bsf:a', 'aac_adtstoasc',
+        // NOTE: We intentionally do NOT use -bsf:a aac_adtstoasc here
+        // That filter only works for AAC audio and breaks AC3/EAC3/MP3.
+        // If AAC audio from MPEG-TS fails in MP4, use /api/transcode instead.
         // Handle timestamp discontinuities at output
         '-fps_mode', 'passthrough',
         '-max_muxing_queue_size', '1024',
