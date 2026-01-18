@@ -377,17 +377,14 @@ class TranscodeSession extends EventEmitter {
         // Video filter for scaling on GPU
         args.push('-vf', `scale_cuda=-2:${height}:interp_algo=lanczos`);
 
+        // NVENC encoder with quality settings
+        // Using portable options that work across FFmpeg builds
         args.push(
             '-c:v', 'h264_nvenc',
-            '-preset', 'p4',           // Balanced preset
-            '-tune', 'hq',             // High quality tuning
+            '-preset', 'p4',           // Balanced preset (p1=fastest, p7=best)
             '-rc', 'constqp',          // Constant QP mode
             '-qp', String(qp),
-            '-rc-lookahead', '32',
-            '-bf', '3',                // B-frames
-            '-b_ref_mode', 'middle',
-            '-spatial-aq', '1',
-            '-temporal-aq', '1'
+            '-bf', '3'                 // B-frames for better compression
         );
     }
 
@@ -412,13 +409,17 @@ class TranscodeSession extends EventEmitter {
      * VAAPI encoder arguments (Linux)
      */
     addVaapiEncoderArgs(args, height, qp) {
-        // Scale on VAAPI
-        args.push('-vf', `scale_vaapi=w=-2:h=${height}`);
+        // VAAPI filter chain:
+        // 1. scale_vaapi to resize on GPU
+        // 2. Ensure output format is nv12 for maximum encoder compatibility
+        // The format is handled automatically when using -hwaccel_output_format vaapi
+        args.push('-vf', `scale_vaapi=w=-2:h=${height}:format=nv12`);
 
         // VAAPI encoder with quality setting
         // Note: -global_quality is the portable way to set quality for VAAPI
         args.push(
             '-c:v', 'h264_vaapi',
+            '-profile:v', 'main',      // Use main profile for compatibility
             '-global_quality', String(qp),
             '-bf', '3'
         );
