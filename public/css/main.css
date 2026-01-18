@@ -4304,3 +4304,68 @@ kbd {
   color: var(--color-text-muted);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
+
+/* =====================================================
+   Now Playing Indicator (Header)
+   ===================================================== */
+
+.now-playing-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  margin-right: 16px;
+  background: linear-gradient(135deg, var(--color-accent) 0%, #8b5cf6 100%);
+  border-radius: var(--radius-full);
+  color: white;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  animation: now-playing-pulse 2s ease-in-out infinite;
+}
+
+.now-playing-indicator:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.5);
+}
+
+.now-playing-indicator.hidden {
+  display: none;
+}
+
+.now-playing-icon {
+  font-size: 10px;
+}
+
+.now-playing-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@keyframes now-playing-pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.85;
+  }
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .now-playing-indicator {
+    max-width: 140px;
+    padding: 5px 10px;
+    font-size: 12px;
+    margin-right: 8px;
+  }
+}

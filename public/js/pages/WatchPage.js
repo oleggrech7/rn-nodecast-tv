@@ -219,6 +219,9 @@ class WatchPage {
         // Load video
         await this.loadVideo(streamUrl);
 
+        // Show Now Playing indicator in navbar
+        this.showNowPlaying(content.title);
+
         // Populate details section
         this.renderDetails();
 
@@ -237,6 +240,28 @@ class WatchPage {
         await this.checkFavorite();
         // Show overlay initially
         this.showOverlay();
+    }
+
+    /**
+     * Show Now Playing indicator in navbar
+     */
+    showNowPlaying(title) {
+        const indicator = document.getElementById('now-playing-indicator');
+        const textEl = document.getElementById('now-playing-text');
+        if (indicator && textEl) {
+            textEl.textContent = title || 'Now Playing';
+            indicator.classList.remove('hidden');
+        }
+    }
+
+    /**
+     * Hide Now Playing indicator in navbar
+     */
+    hideNowPlaying() {
+        const indicator = document.getElementById('now-playing-indicator');
+        if (indicator) {
+            indicator.classList.add('hidden');
+        }
     }
 
     /**
@@ -497,6 +522,8 @@ class WatchPage {
             this.video.src = '';
             this.video.load();
         }
+
+        this.hideNowPlaying();
     }
 
     // === Playback Controls ===
@@ -1161,7 +1188,7 @@ class WatchPage {
 
     hide() {
         // Called when page becomes hidden
-        this.stop();
+        // Don't stop playback here - allow background playback
         this.cancelNextEpisode();
     }
 }

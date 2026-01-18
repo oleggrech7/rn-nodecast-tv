@@ -113,6 +113,15 @@ class App {
             });
         });
 
+        // Now Playing indicator
+        const nowPlayingBtn = document.getElementById('now-playing-indicator');
+        if (nowPlayingBtn) {
+            nowPlayingBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.navigateTo('watch');
+            });
+        }
+
         // Toggle groups button
         document.getElementById('toggle-groups').addEventListener('click', () => {
             this.channelList.toggleAllGroups();
