@@ -16,21 +16,16 @@ FROM node:20-bookworm-slim
 # Install FFmpeg, build dependencies, and hardware acceleration drivers
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    # FFmpeg with full codec support
+    # FFmpeg
     ffmpeg \
     # Build dependencies for better-sqlite3
     python3 \
     make \
     g++ \
-    # VAAPI runtime libraries (AMD/Intel)
-    libva2 \
-    libva-drm2 \
-    libvdpau1 \
+    # Hardware acceleration drivers
     mesa-va-drivers \
-    # Intel VAAPI/QSV drivers
     intel-media-va-driver \
-    i965-va-driver \
-    # VA-API utilities for debugging
+    # Utilities
     vainfo \
     && rm -rf /var/lib/apt/lists/*
 
