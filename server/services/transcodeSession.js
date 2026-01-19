@@ -400,12 +400,13 @@ class TranscodeSession extends EventEmitter {
         if (upscaleMethod === 'hardware' || !useUpscale) {
             switch (encoder) {
                 case 'nvenc':
-                    // NVIDIA CUDA scaling with Lanczos for upscaling
-                    return `scale_cuda=-2:${height}:interp_algo=lanczos`;
+                    // NVIDIA CUDA scaling with Lanczos
+                    // Force nv12 (8-bit) output to handle 10-bit inputs (fixes "10 bit encode not supported")
+                    return `scale_cuda=-2:${height}:interp_algo=lanczos:format=nv12`;
                 case 'vaapi':
                     return `scale_vaapi=w=-2:h=${height}:format=nv12`;
                 case 'qsv':
-                    return `scale_qsv=w=-2:h=${height}`;
+                    return `scale_qsv=w=-2:h=${height}:format=nv12`;
                 case 'amf':
                     // AMF uses CPU decode, so use software scale
                     return useUpscale ? `scale=-2:${height}:flags=lanczos` : `scale=-2:${height}`;
@@ -433,8 +434,7 @@ class TranscodeSession extends EventEmitter {
             '-preset', 'p4',           // Balanced preset (p1=fastest, p7=best)
             '-rc', 'constqp',          // Constant QP mode
             '-qp', String(qp),
-            '-bf', '3',                // B-frames for better compression
-            '-pix_fmt', 'yuv420p'      // Force 8-bit output for compatibility
+            '-bf', '3'                 // B-frames for better compression
         );
     }
 
